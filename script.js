@@ -70,9 +70,9 @@ function question() {
     console.log(answers);
     answerBox.innerHTML = "";
     for (var i = 0; i < answers.length; i++) {
-        var response = answers[i];
+        var options = answers[i];
         var answerButton = document.createElement("button");
-        answerButton.textContent = response;
+        answerButton.textContent = options;
         answerButton.classList.add("answer-button");
         answerButton.addEventListener("click", check);
         answerBox.appendChild(answerButton);
@@ -81,11 +81,12 @@ function question() {
 
 function check(event) {
     var optionSelected = event.target;
+    console.log(optionSelected);
     var currentQues = questions[currentQuestion];
+    console.log(currentQues);
     var correctAnswer = optionSelected.innerText === currentQues.ans;
-    console.log("correctAnswer value is " + correctAnswer);
 
-    if (correctAnswer === false) {
+    if (!correctAnswer) {
         timer -= 10;
     }
 

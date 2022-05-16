@@ -9,34 +9,44 @@ const quizBox = document.getElementById("quizbox-div");
 const questionBox = document.getElementById("question-box");
 const answerBox = document.getElementById("answer-box");
 const timerSpan = document.getElementById("timer-span");
+const scoreBox = document.getElementById("score-box");
+const finalScore = document.getElementById("final-score");
 
 // Define questions and answers
-const questions = [
+var questions = [
     {
-        ques: "Question 1",
+        ques: "What is the current version of JavaScript",
         opts: [
-            "Option 1 (True)",
-            "Option 2 (False)",
+            "ES6",
+            "ES5",
         ],
-        ans: "Option 1 (True)",
+        ans: "ES6",
     },
     {
-        ques: "Question 2",
+        ques: '"var", "let", and "const" are all the same.',
         opts: [
-            "Option 3 (False)",
-            "Option 4 (True)",
+            "True",
+            "False",
         ],
-        ans: "Option 4 (True)",
+        ans: "False",
     },
     {
-        ques: "Question 3",
+        ques: "What does DOM stand for?",
         opts: [
-            "Option 5 (True)",
-            "Option 6 (False)",
+            "Document Object Model",
+            "Document Order Model",
         ],
-        ans: "Option 5 (True)",
+        ans: "Document Object Model",
     },
-]
+    {
+        ques: "Did you enjoy this short quiz?",
+        opts: [
+            "Yes",
+            "Yes",
+        ],
+        ans: "Yes",
+    },
+];
 
 // Define click events
 startButton.addEventListener("click", startQuiz);
@@ -64,27 +74,30 @@ function startTimer() {
     }, 1000);
   }
 
+// Logic to display the questions and answers
 function question() {
-    questionBox.textContent = questions[questionNumber].ques;
-    var answers = questions[questionNumber].opts;
-    console.log(answers);
+    questionBox.textContent = questions[currentQuestion].ques;
+    var options = questions[currentQuestion].opts;
     answerBox.innerHTML = "";
-    for (var i = 0; i < answers.length; i++) {
-        var options = answers[i];
-        var answerButton = document.createElement("button");
-        answerButton.textContent = options;
-        answerButton.classList.add("answer-button");
-        answerButton.addEventListener("click", check);
-        answerBox.appendChild(answerButton);
+
+    for (var i = 0; i < options.length; i++) {
+        const choices = options[i];
+        var optionButton = document.createElement("button");
+        optionButton.textContent = choices;
+        optionButton.classList.add("answer-button");
+        optionButton.addEventListener("click", check);
+        answerBox.appendChild(optionButton);
     }
 }
 
+// Check reponses against answers/options
 function check(event) {
     var optionSelected = event.target;
     console.log(optionSelected);
     var currentQues = questions[currentQuestion];
     console.log(currentQues);
     var correctAnswer = optionSelected.innerText === currentQues.ans;
+    console.log(correctAnswer);
 
     if (!correctAnswer) {
         timer -= 10;
@@ -99,7 +112,16 @@ function check(event) {
     }
 }
 
+// Wrap up the quiz
 function finishQuiz() {
     clearInterval(timerInt);
-    console.log("Finishing quiz")
+    quizBox.classList.add("hidden");
+    timerSpan.classList.add("hidden");
+    scoreBox.classList.remove("hidden");
+    finalScores();
 }
+
+// Display final score
+function finalScores() {
+    finalScore.innerHTML = timer;
+};
